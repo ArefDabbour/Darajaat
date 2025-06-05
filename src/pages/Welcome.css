@@ -1,0 +1,299 @@
+@import url('../index.css');
+
+* {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+.Welcome {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--bg-color);
+}
+
+.WelcomeNav {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  background-color: var(--secondary);
+  color: var(--neutral);
+  box-shadow: 0 1px 3px -2px black;
+  padding-top: 25px;
+  padding-bottom: 25px;
+  position: sticky;
+  top: 0;
+}
+
+.Logo {
+  width: 20%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.Logo h2 {
+  font-weight: 600;
+  font-size: 37px;
+}
+
+.AboutUs-Login {
+  width: 30%;
+}
+
+.AboutUs-Login ul {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  list-style-type: none;
+  gap: 50px;
+  font-size: 21px;
+  font-weight: 600;
+}
+
+.AboutUs-Login ul li {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 3px;
+  cursor: pointer;
+}
+
+.AboutUs-Login ul hr {
+  border: none;
+  width: 80%;
+  height: 3px;
+  border-radius: 10px;
+  background-color: var(--primary-1);
+}
+
+.LoginButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 130px;
+  height: 50px;
+  border-radius: 75px;
+  outline: none;
+  border: 1px solid var(--secondary);
+  cursor: pointer;
+  background-color: var(--primary-1);
+}
+
+.LoginButton * {
+  color: var(--neutral);
+  font-size: 19px;
+  font-weight: bold;
+}
+
+.WelcomeBody {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.startLearn {
+  width: 90%;
+  height: 500px;
+  display: flex;
+  justify-content: center;
+  background-color: var(--secondary);
+  gap: 5px;
+}
+
+.description {
+  width: 45%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.startLearn img {
+  width: 45%;
+}
+
+.startLearn .description h1 {
+  color: var(--primary-1);
+}
+
+.startLearn .description p {
+  font-size: 20px;
+  line-height: 40px;
+  font-weight: bold;
+  color: var(--neutral);
+}
+
+.JoinButton {
+  width: 250px;
+  height: 70px;
+  border-radius: 25px;
+  border: none;
+  background-color: var(--primary-1);
+}
+
+.JoinButton * {
+  color: var(--neutral);
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.trustedBy {
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid rgb(180, 176, 176);
+  background-color: secondary;
+  border-radius: 25px;
+}
+
+.trustedBy h2 {
+  color: var(--primary-1);
+  margin-top: 30px;
+  margin-bottom: 10px;
+}
+
+.trustedBy h4 {
+  color: var(--neutral);
+  font-weight: bold;
+  margin-bottom: 40px;
+}
+
+.companies {
+  width: 80%;
+  display: grid;
+  justify-content: space-evenly;
+  grid-template-columns: repeat(3, auto);
+}
+
+.companies * {
+  width: 90px;
+  height: 90px;
+  color: var(--neutral);
+}
+
+.popularPaths {
+  width: 81.2%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.popularPaths h2 {
+  color: var(--primary-1);
+  font-size: 40px;
+  margin-top: 6%;
+  margin-bottom: 5%;
+}
+
+.pathsCards {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4%;
+}
+
+.studentswords {
+  width: 78%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1%;
+  margin-bottom: 1%;
+}
+
+.studentswords h2 {
+  font-size: 40px;
+  margin-bottom: 4%;
+  color: var(--primary-1);
+}
+
+.studenstCards {
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.CallToAction h2{
+    color: var(--primary-1);
+}
+.CallToAction p {
+  color: var(--neutral);
+}
+.Footer {
+  width: 100%;
+  height: 270px;
+  background-color: var(--secondary);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.Footer ul {
+  list-style-type: none;
+  flex: 3;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  gap: 5%;
+  margin-right: 5%;
+}
+
+.Footer ul li {
+  display: flex;
+  gap: 2px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.Footer ul h3 {
+  font-size: 20px;
+  color: var(--primary-1);
+}
+
+.Footer ul h4 {
+  font-size: 15px;
+  color: var(--neutral);
+}
+
+.Footer p {
+  font-size: 20px;
+  flex: 1;
+  margin-left: 5%;
+  display: flex;
+  gap: 1%;
+
+}
+
+.Footer p h6 {
+  font-size: 20px;
+  display: inline;
+  font-weight: 100;
+}
+.Footer p span {
+  color: var(--neutral);
+}
+a {
+  color: var(--neutral);
+}
+
+a:link {
+  text-decoration: none;
+  color: var(--bg-color);
+}

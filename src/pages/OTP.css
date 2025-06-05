@@ -1,0 +1,44 @@
+@import url('../index.css');
+
+.otp {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 100vh;
+    width: 100vw;
+    background-color: var(--bg-color);
+}
+
+.main-field {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.main-field h3 {
+    color: var(--primary-1);
+}
+
+.main-field img {
+    width: 100px;
+    height: 100px;
+}
+
+.spacing-dots {
+    font-size: 30px;
+    color: var(--neutral);
+}
+
+.resend-code {
+    width: 100px;
+    height: 60px;
+    border: 3px solid var(--primary-1);
+    background-color: var(--secondary);
+}
+
+.resend-code:hover {
+    box-shadow: var(--primary-1) 0px 7px 29px 0px;
+}

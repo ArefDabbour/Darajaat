@@ -32,6 +32,10 @@
     color: var(--neutral);
 }
 
+.wrong-code-entry {
+    color: red;
+}
+
 .resend-code {
     width: 100px;
     height: 60px;
@@ -41,4 +45,10 @@
 
 .resend-code:hover {
     box-shadow: var(--primary-1) 0px 7px 29px 0px;
+}
+
+.resend-code:disabled {
+    box-shadow: none;
+    background-color: rgb(160, 149, 149);
+    border: none;
 }

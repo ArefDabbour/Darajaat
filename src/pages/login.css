@@ -1,0 +1,112 @@
+@import url('../index.css');
+
+.login-page {
+    width: 100vw;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background-color: var(--bg-color);
+}
+
+.login-form {
+    border: 3px solid var(--primary-1);
+    background-color: var(--bg-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 20px;
+    flex-direction: column;
+    gap: 20px;
+    border-radius: 25px;
+    width: 40%;
+    height: 70%;
+}
+
+.login-form form {
+    border: none;
+    width: 50%;
+    gap: 10px;
+}
+
+.login-form form .password-field {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.login-form form .password-field .password-seperator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    gap: 5px;
+}
+
+
+.login-form form .email-field {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.login-form form .email-field .email-seperator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    gap: 5px;
+}
+
+.login-form h2 {
+    color: var(--primary-1)
+}
+
+.login-form img {
+    width: 70px;
+    height: 70px;
+}
+
+.login-form form p span:nth-child(2) {
+    color: var(--primary-1);
+}
+
+.login-form form p {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+}
+
+.login-form form p span {
+    font-size: 10px;
+}
+
+.email-icon,
+.password-icon {
+    color: var(--neutral);
+    font-size: 20px;
+}
+
+input {
+    color: var(--neutral);
+    font-weight: bold;
+    border-radius: 3px;
+    height: 40px;
+    text-align: center;
+    background-color: var(--bg-color);
+    border: 2px solid var(--neutral)
+}
+
+.login-form p {
+    color: var(--neutral);
+
+    a {
+        color: var(--primary-1);
+    }
+}

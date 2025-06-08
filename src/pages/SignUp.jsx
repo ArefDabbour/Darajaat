@@ -1,6 +1,5 @@
 import Select from "react-select";
-import axios from "axios";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
@@ -8,6 +7,10 @@ import "./SignUp.css";
 import { Alert } from "@mui/material";
 import Logo from "../assets/logo.png"
 import CircularProgress from '@mui/material/CircularProgress';
+import ErrorComponent from "../components/ErrorComponent";
+import { SignUpQuery } from "../Queries/SignUpQuery";
+import axios from "axios";
+
 export default function SignUp() {
     const [languages, setlanguages] = useState([]);
     const [countries, setCountries] = useState([]);
@@ -20,45 +23,52 @@ export default function SignUp() {
     const [isLoading, setIsLoading] = useState(false);
     const navigator = useNavigate();
     useEffect(() => {
-        const fetchLanguages = async () => {
-            try {
-                const response = await axios.get("http://127.0.0.1:8000/api/languages");
-                setlanguages(response.data.data);
-            } catch (error) {
-                console.error("Error fetching languages:", error);
-            }
-        };
-        fetchLanguages();
-    }, []);
-    useEffect(() => {
-        const fetchCountries = async () => {
-            try {
-                const response = await axios.get("http://127.0.0.1:8000/api/countries");
-                setCountries(response.data.data);
-            } catch (error) {
-                console.error("Error fetching countries:", error);
-            }
-        };
+        const fetchCountries = async () =>
+            await axios.get('http://127.0.0.1:8000/api/countries').then(
+                (response) => {
+                    setCountries(response.data.data);
+                }
+            ).catch(
+                (error) => {
+                    console.log('error fetching the data', error)
+                }
+            )
         fetchCountries();
-    }, []);
+    }, [])
+    useEffect(() => {
+        const fetchLanguages = async () =>
+            await axios.get('http://127.0.0.1:8000/api/languages').then(
+                (response) => {
+                    setlanguages(response.data.data);
+                }
+            ).catch(
+                (error) => {
+                    console.log('error fetching the data', error)
+                }
+            )
+        fetchLanguages();
+    }, [])
     const handelSubmit = (event) => {
         event.preventDefault();
-        setIsLoading(true);
-        axios
-            .post("http://127.0.0.1:8000/api/users/register", formData)
-            .then(function (response) {
-                console.log(response)
+        setIsLoading(true)
+        axios.post('http://127.0.0.1:8000/api/users/register', formData).then(
+            (response) => {
+                console.log(response.data.data)
                 localStorage.setItem('authToken', response.data.data.token)
-                if (response.status) {
-                    navigator({
-                        pathname: '/signup/otp',
-                        state: { email: formData.email }
-                    })
+                navigator('/signup/otp', {
+                    state: {
+                        email: formData.email,
+                    }
                 }
-            })
-            .catch(function (error) {
-                setFailedSubmitResponseMessage(error.response.data.message);
-            }).finally(() => { setIsLoading(false) })
+                )
+            }
+        ).catch(
+            (error) => {
+                setFailedSubmitResponseMessage(error.response.data.message)
+            }
+        ).finally(
+            () => setIsLoading(false)
+        )
     };
     const handleChange = (event) => {
         event.preventDefault();
@@ -67,9 +77,8 @@ export default function SignUp() {
     return (
         <>
             <div className="signUpPage">
-                {isLoading && <CircularProgress />}
-                <img src={Logo} alt="Darajat logo" />
-                <h2>SignUp to Darajat</h2>
+                {isLoading ? <CircularProgress /> : <img src={Logo} alt="Darajat logo" />}
+                <h2>SignUp to Darajaat</h2>
                 <form onSubmit={handelSubmit} autoComplete="off">
                     <div className="name">
                         <div className="fullName">
@@ -114,19 +123,7 @@ export default function SignUp() {
                             onChange={handleChange}
                             placeholder="Email"
                         />
-                        {
-                            ("email" in failedSubmitResponseMessage) ? < Alert severity="error">
-                                {
-                                    failedSubmitResponseMessage.email && (
-                                        <ul>
-                                            {failedSubmitResponseMessage.email.map((error, index) => (
-                                                <li key={index}>{error}</li>
-                                            ))}
-                                        </ul>
-                                    )
-                                }
-                            </Alert> : null
-                        }
+                        <ErrorComponent error={'email'} Errors={failedSubmitResponseMessage} />
                     </div>
                     <div className="password-field">
                         <div className="password-entry">
@@ -150,19 +147,7 @@ export default function SignUp() {
                                 />
                             )}
                         </div>
-                        {
-                            ("password" in failedSubmitResponseMessage) ? < Alert severity="error">
-                                {
-                                    failedSubmitResponseMessage.password && (
-                                        <ul>
-                                            {failedSubmitResponseMessage.password.map((error, index) => (
-                                                <li key={index}>{error}</li>
-                                            ))}
-                                        </ul>
-                                    )
-                                }
-                            </Alert> : null
-                        }
+                        <ErrorComponent error={'password'} Errors={failedSubmitResponseMessage} />
                     </div>
                     <div className="password-conf-field">
                         <div className="password-conf-entry">
@@ -186,19 +171,7 @@ export default function SignUp() {
                                 />
                             )}
                         </div>
-                        {
-                            ("password_confirmation" in failedSubmitResponseMessage) ? < Alert severity="error">
-                                {
-                                    failedSubmitResponseMessage.password_confirmation && (
-                                        <ul>
-                                            {failedSubmitResponseMessage.password_confirmation.map((error, index) => (
-                                                <li key={index}>{error}</li>
-                                            ))}
-                                        </ul>
-                                    )
-                                }
-                            </Alert> : null
-                        }
+                        <ErrorComponent error={'password_confirmation'} Errors={failedSubmitResponseMessage} />
                     </div>
                     <div className="country-select-field">
                         <Select
@@ -229,19 +202,7 @@ export default function SignUp() {
                             }))}
 
                         />
-                        {
-                            ("country_id" in failedSubmitResponseMessage) ? < Alert severity="error">
-                                {
-                                    failedSubmitResponseMessage.country_id && (
-                                        <ul>
-                                            {failedSubmitResponseMessage.country_id.map((error, index) => (
-                                                <li key={index}>{error}</li>
-                                            ))}
-                                        </ul>
-                                    )
-                                }
-                            </Alert> : null
-                        }
+                        <ErrorComponent error={'country_id'} Errors={failedSubmitResponseMessage} />
                     </div>
                     <div className="language-select-field">
                         <Select
@@ -271,19 +232,7 @@ export default function SignUp() {
                                 value: language.id,
                             }))}
                         />
-                        {
-                            ("language_id" in failedSubmitResponseMessage) ? < Alert severity="error">
-                                {
-                                    failedSubmitResponseMessage.language_id && (
-                                        <ul>
-                                            {failedSubmitResponseMessage.language_id.map((error, index) => (
-                                                <li key={index}>{error}</li>
-                                            ))}
-                                        </ul>
-                                    )
-                                }
-                            </Alert> : null
-                        }
+                        <ErrorComponent error={'language_id'} Errors={failedSubmitResponseMessage} />
                     </div>
                     <button type="submit">
                         {isLoading ? "Processing..." : "Sign up now"}

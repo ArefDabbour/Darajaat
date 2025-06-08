@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './OTP.css'
 import OtpInput from 'react-otp-input';
 import { LuDot } from "react-icons/lu";
@@ -8,31 +8,53 @@ import { useMutation } from '@tanstack/react-query';
 import { VerifyOtp } from '../Queries/VerifyOtp';
 import { ReSendCode } from '../Queries/ReSendCode';
 import CircularProgress from '@mui/material/CircularProgress';
-import { TiTick } from "react-icons/ti";
+import { SiTicktick } from "react-icons/si";
+import { VscError } from "react-icons/vsc";
 
 export default function OTP() {
     const location = useLocation();
     const navigator = useNavigate();
-    const recivedEmail = location.state?.email;
+
+    const [recivedEmail, setRecivedEmail] = useState('');
 
     const [otp, setOtp] = useState('');
     const [otpBorderColor, setBorderColor] = useState("")
 
     const [isSending, setIsSending] = useState(false);
     const [isVerifying, setIsVerifying] = useState(false);
-    const [verifyMessage, setVerifyMessage] = useState('Verifying')
+    const [verifyMessage, setVerifyMessage] = useState(true)
+
+    const [wrongCode, setWrongCode] = useState(false);
+    const [isAllowedToReSendCode, setIsAllowedToReSendCode] = useState(true);
+    const [counter, setCounter] = useState(0);
+    useEffect(() => {
+        setRecivedEmail(location.state.email || '')
+    }, [location.state])
+    useEffect(() => {
+        let timer = counter;
+        if (timer > 0) {
+            timer = setInterval(() => {
+                setCounter(counter - 1)
+            }, 1000)
+        }
+        else {
+            setIsAllowedToReSendCode(true)
+        }
+        return () => { clearInterval(timer) }
+    }, [counter])
     const verify = useMutation({
         mutationFn: VerifyOtp,
         onMutate: () => { setIsVerifying(true) },
         onSuccess: (data) => {
             setBorderColor('green');
+            setVerifyMessage(false)
             localStorage.setItem('authToken', data.token)
-            setVerifyMessage(<TiTick />)
             setTimeout(() => {
                 navigator('/dashboard');
             }, 1000);
         },
         onError: () => {
+            setWrongCode(true)
             setBorderColor('red');
         },
         onSettled: () => {
@@ -41,12 +63,22 @@ export default function OTP() {
     });
     const resendCode = useMutation({
         mutationFn: ReSendCode,
-        onMutate: () => setIsSending(true),
+        onMutate: () => {
+            setIsSending(true)
+        },
+        onSuccess: (response) => {
+            console.log(response)
+            setIsAllowedToReSendCode(false)
+            setCounter(60)
+        }
+        ,
+        onError: (error) => console.log(error),
         onSettled: () => setIsSending(false)
     })
     const handelChange = (otpValue) => {
         setOtp(otpValue);
         setBorderColor('');
+        setWrongCode(false);
         setIsVerifying(false)
         if (otpValue.length === 6) {
             setIsVerifying(true)
@@ -60,15 +92,40 @@ export default function OTP() {
                 {
                     (isVerifying) ? (
                         <>
-                            <CircularProgress />
                             <h3>
-                                {verifyMessage}
+                                <CircularProgress />
+                                {"  "}
+                                Verifying ...
                             </h3>
                         </>
-                    ) :
-                        < h3 >
-                            Please enter the code that we sent you on your email
+                    ) : (
+                        <h3>
+                            {
+                                (wrongCode) ? (<>
+                                    <span className='wrong-code-entry'>
+                                        <VscError />
+                                        {"  "}
+                                        Please enter the correct code
+                                    </span></>) : (
+                                    <>
+                                        {
+                                            verifyMessage ? (
+                                                <>
+                                                    Please Enter the code that we sent you on your email
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <SiTicktick />
+                                                    {"  "}
+                                                    Verification was done sucessfully
+                                                </>
+                                            )
+                                        }
+                                    </>
+                                )
+                            }
                         </h3>
+                    )
                 }
                 <OtpInput
                     value={otp}
@@ -92,16 +149,19 @@ export default function OTP() {
                 />
                 <button
                     className='resend-code'
-                    disabled={isSending}
-                    onClick={() => { resendCode.mutate() }}
+                    disabled={isSending || !isAllowedToReSendCode}
+                    onClick={() => { resendCode.mutate({ email: recivedEmail }) }}
                 >
                     {
                         (isSending) ? (
                             <>
-                                <CircularProgress />
-                                Sending ...
+                                Sending...
                             </>
-                        ) : 'Resend code'
+                        ) : (
+                            (isAllowedToReSendCode) ?
+                                <>Resend code</> :
+                                <>{counter}</>
+                        )
                     }
                 </button>
             </div>

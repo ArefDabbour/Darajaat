@@ -9,7 +9,7 @@ export default function WelcomeNav() {
     alignItems: "center",
     justifyContnet: "center"
   };
-  const [currentPage, setCurrentPage] = useState("start");
+  const [showLine, setShowLine] = useState(true);
   return (
     <>
       <div className="WelcomeNav">
@@ -20,13 +20,13 @@ export default function WelcomeNav() {
         <div className="AboutUs-Login">
           <ul>
             <li>
-              <Link to="/" style={linkStyle} onClick={() => { setCurrentPage("start") }}>
-                start {(currentPage === "start" )? < hr /> : null}
+              <Link to="/" style={linkStyle} onClick={() => { setShowLine(showLine) }}>
+                start {(showLine) ? <><hr /></> : null}
               </Link>
             </li>
             <li>
-              <Link to="/aboutUs" style={linkStyle} onClick={() => { setCurrentPage("about-us") }}>
-                about us {(currentPage === "about-us") ? <hr /> : null}
+              <Link to="/aboutUs" style={linkStyle} onClick={() => { setShowLine(!showLine) }}>
+                about us {(!showLine) ? <><hr /></> : null}
               </Link>
             </li>
             <li>

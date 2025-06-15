@@ -8,9 +8,8 @@ import { useState } from "react";
 import { useMutation } from '@tanstack/react-query';
 import CircularProgress from '@mui/material/CircularProgress';
 import { ForgotPassword } from '../Queries/ForgotPassword'
-import { ReSetPassword } from '../Queries/ReSetPassword'
-import { PasswordReSetCode } from '../Queries/PasswordReSetCode'
 import ErrorComponent from "../components/ErrorComponent";
+import axios from "axios";
 
 export default function Login() {
     const [formData, setFormData] = useState({});
@@ -18,7 +17,8 @@ export default function Login() {
     const [userName, setUserName] = useState('');
     const [isLoggedin, setIsLoggedin] = useState(false);
     const [requestError, setRequestError] = useState({});
-
+    const [isEmailEntered, setIsEmailEntered] = useState(false);
+    const [showErrorUi, setShowErrorUi] = useState(false);
     const navigator = useNavigate();
 
     const loginQuery = useMutation({
@@ -27,9 +27,9 @@ export default function Login() {
         onSuccess: (data) => {
             setUserName(data.first_name || '')
             setIsLoggedin(true)
-            // setTimeout(() => {
-            //     navigator('/dashboard');
-            // }, 3000);
+            setTimeout(() => {
+                navigator('/dashboard');
+            }, 3000);
         },
         onError: (error) => {
             setRequestError(error.response.data.message)
@@ -37,21 +37,42 @@ export default function Login() {
         onSettled: () => { setIsSubmitting(false) }
     })
 
-    const reSetPasswordQuery = useMutation({
-        mutationFn: ReSetPassword
-    });
     const forgotPasswordQuery = useMutation({
-        mutationFn: ForgotPassword
-
-    });
-    const passWordReSetCode = useMutation({
-        mutationFn: PasswordReSetCode
-
+        mutationFn: ForgotPassword,
+        onMutate: () => { setIsSubmitting(true); setRequestError({}) },
+        onError: (error) => {
+            if (axios.isAxiosError(error)) {
+                setRequestError(error.response.data.message)
+            }
+            else {
+                console.log(error)
+            }
+        },
+        onSuccess: (data) => {
+            console.log(data)
+            setTimeout(() => {
+                navigator('/login/password-reset', {
+                    state: {
+                        email: formData.email
+                    }
+                });
+            }, 2000);
+        },
+        onSettled: () => { setIsSubmitting(false); }
     });
 
     const handleChange = (event) => {
         event.preventDefault();
         setFormData({ ...formData, [event.target.name]: event.target.value });
+        if (event.target.name === 'email') {
+            if (event.target.value === '') {
+                setIsEmailEntered(false)
+            }
+            else {
+                setShowErrorUi(false)
+                setIsEmailEntered(true)
+            }
+        }
         (event.target.name in requestError) ? (
             delete requestError[event.target.name]
         ) : null
@@ -75,7 +96,16 @@ export default function Login() {
                     <div className="email-field">
                         <div className="email-seperator">
                             <MdOutlineMail className="email-icon" />
-                            <input type="email" name='email' placeholder="Email" onChange={handleChange} />
+                            <input
+                                type="email"
+                                name='email'
+                                placeholder={
+                                    (showErrorUi) ? 'Please enter your email' : "email"
+                                }
+                                onChange={handleChange}
+                                style={{
+                                    borderColor: (showErrorUi) ? "red" : ''
+                                }} />
                         </div>
                         <div>
                             <ErrorComponent error={'email'} Errors={requestError} />
@@ -90,11 +120,22 @@ export default function Login() {
                             <ErrorComponent error={'password'} Errors={requestError} />
                         </div>
                     </div>
-                    <p>
-                        <span>Forgot your password ?</span>
-                        <span>Click here to reset it</span>
-                    </p>
-                    <button type="submit">Login</button>
+                    <div className="buttons">
+                        <button
+                            type="button"
+                            className="reset-password-button"
+                            onClick={() => {
+                                (isEmailEntered) ? (
+                                    forgotPasswordQuery.mutate(
+                                        {
+                                            email: formData.email
+                                        }
+                                    )
+                                ) : setShowErrorUi(true)
+                            }}
+                        >{(isSubmitting) ? <>redirecting...</> : <>reset password</>}</button>
+                        <button type="submit">Login</button>
+                    </div>
                 </form>
                 <p>
                     No account ? no problem ! {" "}

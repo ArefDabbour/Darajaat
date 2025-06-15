@@ -26,6 +26,7 @@
   padding-bottom: 25px;
   position: sticky;
   top: 0;
+  z-index: 1;
 }
 
 .Logo {
@@ -229,12 +230,14 @@
   align-items: center;
 }
 
-.CallToAction h2{
-    color: var(--primary-1);
+.CallToAction h2 {
+  color: var(--primary-1);
 }
+
 .CallToAction p {
   color: var(--neutral);
 }
+
 .Footer {
   width: 100%;
   height: 270px;
@@ -286,9 +289,11 @@
   display: inline;
   font-weight: 100;
 }
+
 .Footer p span {
   color: var(--neutral);
 }
+
 a {
   color: var(--neutral);
 }

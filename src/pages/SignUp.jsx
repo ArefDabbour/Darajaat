@@ -1,14 +1,12 @@
+import "./SignUp.css";
 import Select from "react-select";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { FaEye } from "react-icons/fa";
-import { FaEyeSlash } from "react-icons/fa";
-import "./SignUp.css";
+import { FaEye,FaEyeSlash } from "react-icons/fa";
 import { Alert } from "@mui/material";
 import Logo from "../assets/logo.png"
 import CircularProgress from '@mui/material/CircularProgress';
 import ErrorComponent from "../components/ErrorComponent";
-import { SignUpQuery } from "../Queries/SignUpQuery";
 import axios from "axios";
 
 export default function SignUp() {

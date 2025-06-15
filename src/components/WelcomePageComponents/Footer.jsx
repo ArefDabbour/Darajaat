@@ -27,10 +27,10 @@ export default function Footer() {
         </ul>
         <p>
           <span>
-            <FaRegCopyright /> <h6>Learn</h6>
+            <FaRegCopyright /> <h6>Darajaat</h6>
           </span>
           <span>
-            <span>Terms</span>&<span>Conditions</span> | 
+            <span>Terms</span>&<span>Conditions</span> |
           </span>
           <span>Privacy Policy</span>
         </p>
